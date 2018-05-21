@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.chinamobile.gdwy.Camera" version="1.1.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 插件名称 -->
+    <name>Camera</name>
+    <!-- 插件信息 -->
+    <js-module name="Camera" src="www/Camera.js">
+        <clobbers target="cordova.plugins.Camera" />
+    </js-module>
+
+
+    <platform name="android">
+        <!-- 相机插件 -->
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="Camera">
+                <param name="android-package" value="com.chinamobile.gdwy.Camera"/>
+            </feature>
+        </config-file>
+        <!-- 权限 -->
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        </config-file>
+        <!-- 适配sdk24及以上 -->
+        <config-file target="AndroidManifest.xml" parent="application">
+            <provider
+                android:name="com.chinamobile.gdwy.FileProvider"
+                android:authorities="${applicationId}.provider"
+                android:exported="false"
+                android:grantUriPermissions="true" >
+                <meta-data
+                    android:name="android.support.FILE_PROVIDER_PATHS"
+                    android:resource="@xml/camera_provider_paths"/>
+            </provider>
+        </config-file>
+        <!-- 项目文件 -->
+        <source-file src="src/android/xml/camera_provider_paths.xml" target-dir="res/xml" />
+        <source-file src="src/android/Camera.java"        target-dir="src/com/chinamobile/gdwy" />
+        <source-file src="src/android/CameraUtil.java"    target-dir="src/com/chinamobile/gdwy" />
+        <source-file src="src/android/FileProvider.java"  target-dir="src/com/chinamobile/gdwy" />
+        <source-file src="src/android/LocationUtils.java" target-dir="src/com/chinamobile/gdwy" />
+        <source-file src="src/android/LogUtil.java" target-dir="src/com/chinamobile/gdwy" />
+    </platform>
+    
+    <platform name="ios">
+        <!-- 相机插件 -->
+        <config-file target="config.xml" parent="/*">
+            <feature name="Camera">
+                <param name="ios-package" value="Camera" />
+            </feature>
+            <preference name="CameraUsesGeolocation" value="false" />
+        </config-file>
+        <!--  项目文件 -->
+        <header-file src="src/ios/Camera.h" />
+        <source-file src="src/ios/Camera.m" />
+        <header-file src="src/ios/NSCameraUtil.h" />
+        <source-file src="src/ios/NSCameraUtil.m" />
+        <header-file src="src/ios/MoLocationManager.h" />
+        <source-file src="src/ios/MoLocationManager.m" />
+        
+    </platform>
+    
+</plugin>
